@@ -38,6 +38,32 @@ pthreads — rien d'autre.
 # valeurs par défaut : 8080, ./public
 ```
 
+## Docker
+
+Image multi-stage (build Alpine + binaire statique musl → `scratch`),
+~700 Ko, sans dépendance à l'exécution.
+
+```sh
+docker build -t callvideo .
+docker run -d -p 8080:8080 --name callvideo callvideo
+```
+
+### Déploiement AWS (ECR + ECS/Fargate)
+
+```sh
+aws ecr create-repository --repository-name callvideo
+aws ecr get-login-password --region <region> | \
+  docker login --username AWS --password-stdin <account-id>.dkr.ecr.<region>.amazonaws.com
+
+docker tag callvideo:latest <account-id>.dkr.ecr.<region>.amazonaws.com/callvideo:latest
+docker push <account-id>.dkr.ecr.<region>.amazonaws.com/callvideo:latest
+```
+
+Puis créer un service ECS/Fargate (ou une tâche EC2) qui expose le port
+8080. Comme le serveur ne fait pas de TLS natif, mettre un ALB devant
+avec un certificat ACM pour du HTTPS/WSS en production (nécessaire de
+toute façon : `getUserMedia` exige un contexte sécurisé).
+
 Puis ouvrir `http://<ip-du-serveur>:8080/` sur les deux postes, entrer le
 même code de salon des deux côtés, et cliquer sur "Rejoindre l'appel".
 
