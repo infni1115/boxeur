@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>callVideo</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+  <section id="join-screen" class="screen">
+    <div class="card">
+      <h1>callVideo</h1>
+      <p class="subtitle">Appel vidéo à deux, en direct du navigateur.</p>
+      <label for="room-input">Code de salon</label>
+      <input id="room-input" type="text" placeholder="ex: salon-42" autocomplete="off" />
+      <button id="join-btn">Rejoindre l'appel</button>
+      <p id="join-error" class="error hidden"></p>
+      <p class="hint">Les deux personnes doivent saisir le même code.</p>
+    </div>
+  </section>
+
+  <section id="call-screen" class="screen hidden">
+    <div class="video-stage">
+      <video id="remote-video" autoplay playsinline></video>
+      <div id="remote-placeholder" class="placeholder">
+        <p>En attente de l'autre personne…</p>
+      </div>
+      <video id="local-video" autoplay playsinline muted></video>
+    </div>
+
+    <div class="controls">
+      <button id="mic-btn" class="control" title="Micro">🎤</button>
+      <button id="cam-btn" class="control" title="Caméra">📷</button>
+      <button id="hangup-btn" class="control danger" title="Raccrocher">⏹</button>
+    </div>
+
+    <p id="status" class="status"></p>
+  </section>
+
+  <script src="/app.js"></script>
+</body>
+</html>
